@@ -1,184 +1,238 @@
 ````markdown
 <div align="center">
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:2563EB,100:06B6D4&text=MediBook%203D&fontColor=ffffff&fontSize=55&fontAlignY=38&desc=Advanced%20Patient%20Appointment%20Management%20System&descAlignY=58"/>
+# 🏥 MediBook 3D
+### Advanced Patient Appointment Management System
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=700&size=28&pause=1200&color=0EA5E9&center=true&vCenter=true&width=900&lines=🏥+Advanced+Patient+Appointment+System;👨‍⚕️+Doctor+Management;👤+Patient+Dashboard;🛠️+Admin+Dashboard;📅+Appointment+Scheduling;✨+Modern+3D+Healthcare+UI"/>
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=30&pause=1000&color=0EA5E9&center=true&vCenter=true&width=900&lines=Patient+Appointment+Management+System;Doctor+Dashboard;Admin+Dashboard;Responsive+3D+Healthcare+UI;Built+with+HTML+%7C+TailwindCSS+%7C+JavaScript" />
 
-<p>
+<p align="center">
 
-<a href="https://defeated-aqua-mnu7c9xs.edgeone.dev">
-<img src="https://img.shields.io/badge/🚀%20Live%20Demo-Open-success?style=for-the-badge">
-</a>
-
-<img src="https://img.shields.io/github/stars/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY?style=for-the-badge">
-<img src="https://img.shields.io/github/forks/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY?style=for-the-badge">
-<img src="https://img.shields.io/github/issues/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY?style=for-the-badge">
-<img src="https://img.shields.io/github/license/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY?style=for-the-badge">
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Responsive](https://img.shields.io/badge/Responsive-Yes-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Open Source](https://img.shields.io/badge/Open%20Source-❤-red?style=for-the-badge)
 
 </p>
+
+### 🚀 Live Demo
+
+## 🌐 https://defeated-aqua-mnu7c9xs.edgeone.dev/
 
 </div>
 
 ---
 
-# 🎬 Live Demo
+# 🎥 Preview
 
-### 🌐 https://defeated-aqua-mnu7c9xs.edgeone.dev/
+> Replace these with your own screenshots/GIFs after uploading them.
 
----
+| Landing Page | Patient Dashboard |
+|--------------|------------------|
+| ![](assets/screenshots/home.gif) | ![](assets/screenshots/patient.gif) |
 
-# 📽️ Preview
-
-<p align="center">
-
-<img width="900" src="assets/demo.gif">
-
-</p>
+| Doctor Dashboard | Admin Dashboard |
+|-----------------|----------------|
+| ![](assets/screenshots/doctor.gif) | ![](assets/screenshots/admin.gif) |
 
 ---
 
-# ✨ Features
+# 📖 About
 
-| 👤 Patient | 👨‍⚕️ Doctor | 🛠️ Admin |
-|-----------|------------|----------|
-| Register | Login | Dashboard |
-| Login | Manage Slots | User Management |
-| Search Doctors | View Patients | Statistics |
-| Book Appointment | Profile Update | Cancel Appointments |
-| Cancel Appointment | Schedule Management | Delete Users |
+**MediBook 3D** is a modern healthcare appointment management system featuring a premium 3D interface where:
+
+- 👨‍⚕️ Doctors manage schedules
+- 👤 Patients book appointments
+- 🛠 Admin monitors the entire platform
+- 📧 Mock email notifications are generated
+- 💾 Data is stored using LocalStorage
+- 📱 Fully responsive design
+
+---
+
+# ✨ Premium Features
+
+## 👤 Patient
+
+- ✅ Register
+- ✅ Login
+- ✅ Search Doctors
+- ✅ Filter by Specialization
+- ✅ Book Appointment
+- ✅ Cancel Appointment
+- ✅ Appointment History
+- ✅ Responsive Dashboard
+
+---
+
+## 👨‍⚕️ Doctor
+
+- Add Available Slots
+- View Upcoming Patients
+- Update Profile
+- Change Specialization
+- Manage Schedule
+- Dashboard Analytics
+
+---
+
+## 🛠 Admin
+
+- View Users
+- Delete Users
+- View Appointments
+- Cancel Appointment
+- Statistics Dashboard
+- Manage Entire Platform
+
+---
+
+# 🚀 UI Highlights
+
+- 🌈 Glassmorphism
+- 🎨 Modern Gradient Design
+- 📱 Responsive Layout
+- ⚡ Fast Performance
+- 💎 Premium Cards
+- 🎯 Smooth Animations
+- 🌙 Easy to Extend
+- 🔥 Interactive Components
 
 ---
 
 # 🛠 Tech Stack
 
-<p align="center">
+| Frontend | Styling | Database | Icons |
+|-----------|----------|----------|-------|
+| HTML5 | Tailwind CSS | LocalStorage | Font Awesome |
 
-<img src="https://skillicons.dev/icons?i=html,css,js,tailwind,git,github,vscode"/>
+---
 
-</p>
+# 📂 Folder Structure
+
+```
+MediBook-3D/
+│
+├── index.html
+├── README.md
+│
+├── assets/
+│   ├── screenshots/
+│   ├── gifs/
+│   └── images/
+│
+├── css/
+│
+├── js/
+│
+└── icons/
+```
 
 ---
 
 # 🏗 Architecture
 
 ```text
-                ┌───────────────┐
-                │    Browser    │
-                └───────┬───────┘
-                        │
-        ┌───────────────┼───────────────┐
-        │               │               │
-        ▼               ▼               ▼
-   Patient         Doctor          Admin
-        │               │               │
-        └───────────────┼───────────────┘
-                        │
-                        ▼
-                 LocalStorage DB
-                        │
-                        ▼
-                Dynamic Dashboard
+                    User
+                      │
+      ┌───────────────┼───────────────┐
+      │               │               │
+      ▼               ▼               ▼
+
+ Patient         Doctor         Administrator
+
+      │               │               │
+      │               │               │
+ Book Slot      Manage Slots     Monitor Users
+
+      │               │               │
+      └───────────────┼───────────────┘
+                      ▼
+
+             LocalStorage Database
+
+                      │
+
+                      ▼
+
+             Dynamic Dashboard UI
 ```
 
 ---
 
-# 🚀 Installation
+# 🔄 Application Workflow
 
-```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git
+```mermaid
+flowchart TD
 
-cd YOUR_REPOSITORY
+A[Landing Page]
 
-open index.html
+A --> B(Login)
+
+A --> C(Register)
+
+B --> D{User Role}
+
+D --> E(Patient Dashboard)
+
+D --> F(Doctor Dashboard)
+
+D --> G(Admin Dashboard)
+
+E --> H(Book Appointment)
+
+F --> I(Add Slots)
+
+G --> J(Manage System)
+
+H --> K(LocalStorage)
+
+I --> K
+
+J --> K
 ```
 
 ---
 
-# 🌍 Deployment
+# 📸 Screenshots
 
-- ✅ GitHub Pages
-- ✅ EdgeOne Pages
-- ✅ Netlify
-- ✅ Vercel
-
----
-
-# 📊 Repository Statistics
-
-<p align="center">
-
-<img height="170" src="https://github-readme-stats.vercel.app/api?username=YOUR_GITHUB_USERNAME&show_icons=true&theme=tokyonight"/>
-
-<img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_GITHUB_USERNAME&layout=compact&theme=tokyonight"/>
-
-</p>
-
----
-
-# 🔥 GitHub Streak
-
-<p align="center">
-
-<img src="https://streak-stats.demolab.com?user=YOUR_GITHUB_USERNAME&theme=tokyonight"/>
-
-</p>
-
----
-
-# 📈 Contribution Graph
-
-<p align="center">
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=YOUR_GITHUB_USERNAME&theme=tokyo-night"/>
-
-</p>
-
----
-
-# 🐍 Contribution Snake
-
-<p align="center">
-
-<img src="https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_GITHUB_USERNAME/output/github-contribution-grid-snake.svg"/>
-
-</p>
-
----
-
-# 🏆 GitHub Trophies
-
-<p align="center">
-
-<img src="https://github-profile-trophy.vercel.app/?username=YOUR_GITHUB_USERNAME&theme=algolia&margin-w=10&margin-h=10"/>
-
-</p>
-
----
-
-# 📷 Screenshots
+## 🏠 Landing Page
 
 ```
-assets/screenshots/
+assets/screenshots/home.png
+```
 
-home.png
+---
 
-login.png
+## 👤 Patient Dashboard
 
-patient-dashboard.png
+```
+assets/screenshots/patient-dashboard.png
+```
 
-doctor-dashboard.png
+---
 
-admin-dashboard.png
+## 👨‍⚕️ Doctor Dashboard
 
-booking.png
+```
+assets/screenshots/doctor-dashboard.png
+```
+
+---
+
+## 🛠 Admin Dashboard
+
+```
+assets/screenshots/admin-dashboard.png
 ```
 
 ---
 
 # 🎯 Demo Credentials
 
-### Admin
+## Admin
 
 ```
 Email:
@@ -188,7 +242,9 @@ Password:
 password123
 ```
 
-### Doctor
+---
+
+## Doctor
 
 ```
 Email:
@@ -198,7 +254,9 @@ Password:
 password123
 ```
 
-### Patient
+---
+
+## Patient
 
 ```
 Email:
@@ -210,26 +268,190 @@ password123
 
 ---
 
-# 📌 Roadmap
+# ⚙ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/yourusername/medibook-3d.git
+```
+
+---
+
+## Open Project
+
+```
+cd medibook-3d
+```
+
+Open
+
+```
+index.html
+```
+
+inside your browser.
+
+---
+
+# 🚀 Deployment
+
+## GitHub Pages
+
+```
+Settings
+
+↓
+
+Pages
+
+↓
+
+Deploy from Branch
+
+↓
+
+main
+
+↓
+
+Save
+```
+
+---
+
+## Netlify
+
+```
+New Site
+
+↓
+
+Drag & Drop Folder
+
+↓
+
+Deploy
+```
+
+---
+
+## Vercel
+
+```bash
+npm i -g vercel
+
+vercel
+```
+
+---
+
+## EdgeOne Pages
+
+Upload project folder
+
+↓
+
+Deploy
+
+↓
+
+Done ✅
+
+---
+
+# 🌟 Future Improvements
 
 - Firebase Authentication
-- MongoDB
-- Email Integration
+- MongoDB Integration
+- Real Email Service
 - SMS Reminder
-- Video Consultation
-- Online Payments
+- Online Payment
+- Google Calendar Sync
+- Doctor Ratings
+- Chat Support
+- AI Health Assistant
 - Prescription Upload
 - Medical Reports
-- AI Health Assistant
-- Google Calendar Sync
+- Dark Mode
+
+---
+
+# 📊 Project Stats
+
+✔ Authentication
+
+✔ CRUD Operations
+
+✔ Responsive Design
+
+✔ LocalStorage Database
+
+✔ Search System
+
+✔ Appointment Booking
+
+✔ Dashboard
+
+✔ Admin Panel
+
+✔ Doctor Panel
+
+✔ Patient Panel
+
+---
+
+# 🤝 Contributing
+
+```bash
+Fork
+
+↓
+
+Create Branch
+
+↓
+
+Commit
+
+↓
+
+Push
+
+↓
+
+Pull Request
+```
+
+---
+
+# 📜 License
+
+MIT License
+
+---
+
+# 👨‍💻 Developer
+
+**Spandan Parhi**
+
+GitHub
+
+```
+https://github.com/yourusername
+```
+
+LinkedIn
+
+```
+https://linkedin.com/in/yourprofile
+```
 
 ---
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&section=footer&height=150&color=0:2563EB,100:06B6D4"/>
-
-### ⭐ Star this repository if you found it helpful!
+### ⭐ If you like this project, give it a Star ⭐
 
 Made with ❤️ using HTML, Tailwind CSS & JavaScript
 
