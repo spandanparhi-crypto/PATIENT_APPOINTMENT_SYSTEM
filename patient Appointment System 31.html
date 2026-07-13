@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediBook 3D - Advanced Appointment System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom 3D Layering and Animations */
+        body {
+            background: radial-gradient(circle at 50% 50%, #eef2f7 0%, #d2dbe7 100%);
+        }
+        
+        /* Realistic 3D Pop Effect */
+        .card-3d {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.05),
+                0 10px 20px -5px rgba(130, 150, 180, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transform: translateY(0px) scale(1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 
+                0 20px 30px -10px rgba(100, 120, 160, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        /* Interactive 3D Pressable Button */
+        .btn-3d-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-bottom: 4px solid #1e40af;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.35);
+            transition: all 0.15s ease;
+        }
+
+        .btn-3d-primary:hover {
+            transform: translateY(-1px);
+            border-bottom-width: 5px;
+            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.45);
+        }
+
+        .btn-3d-primary:active {
+            transform: translateY(3px);
+            border-bottom-width: 1px;
+            box-shadow: 0 1px 4px rgba(29, 78, 216, 0.2);
+        }
+
+        .btn-3d-success {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            border-bottom: 4px solid #065f46;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.35);
+            transition: all 0.15s ease;
+        }
+
+        .btn-3d-success:hover {
+            transform: translateY(-1px);
+            border-bottom-width: 5px;
+        }
+
+        .btn-3d-success:active {
+            transform: translateY(3px);
+            border-bottom-width: 1px;
+        }
+
+        /* 3D Slot Buttons */
+        .slot-3d {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-bottom: 3px solid #9ca3af;
+            transition: all 0.1s ease;
+        }
+        .slot-3d:hover {
+            transform: translateY(-2px);
+            border-bottom-width: 4px;
+        }
+        .slot-3d:active {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+        }
+
+        /* View Changing Smooth Animations */
+        .view {
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col text-gray-800">
+
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-40 border-b border-blue-500/30 backdrop-blur-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('landing')">
+                <div class="bg-white/10 p-2 rounded-xl border border-white/20 shadow-inner group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calendar-check text-2xl text-blue-200"></i>
+                </div>
+                <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">MediBook</span>
+            </div>
+            <div id="nav-links" class="flex items-center space-x-4">
+                </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-7xl">
+
+        <section id="view-landing" class="view space-y-12">
+            <div class="text-center max-w-3xl mx-auto space-y-6 py-12">
+                <span class="bg-blue-100 text-blue-800 text-xs uppercase font-extrabold tracking-widest px-4 py-1.5 rounded-full border border-blue-200 shadow-sm">Healthcare Scheduling 2.0</span>
+                <h1 class="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-none drop-shadow-sm">Your Health, <br><span class="text-blue-600">Scheduled Smarter.</span></h1>
+                <p class="text-slate-600 text-xl font-medium max-w-xl mx-auto">Book appointments with top specialists, manage your medical calendar, and receive automated reminders instantly.</p>
+                <div class="pt-6">
+                    <button onclick="switchView('register')" class="btn-3d-primary text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg tracking-wide transition">Get Started Today <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+            
+            <div class="card-3d bg-amber-50/90 border-amber-200/60 p-6 max-w-xl mx-auto rounded-2xl">
+                <div class="flex space-x-4">
+                    <div class="bg-amber-500/10 p-3 h-fit rounded-xl text-amber-700"><i class="fa-solid fa-circle-info text-xl"></i></div>
+                    <div>
+                        <p class="text-base text-amber-900 font-extrabold tracking-wide">Prototype Demo Profiles</p>
+                        <p class="text-xs text-amber-700 mb-3 font-semibold">Master Key Password: <span class="bg-amber-200 px-1.5 py-0.5 rounded text-amber-900 font-mono">password123</span></p>
+                        <ul class="text-sm text-amber-800 space-y-1 bg-white/50 p-3 rounded-xl border border-amber-200 font-medium">
+                            <li><i class="fa-solid fa-shield-halved text-slate-500 w-5"></i><strong>Admin:</strong> admin@medibook.com</li>
+                            <li><i class="fa-solid fa-user-doctor text-blue-500 w-5"></i><strong>Doctor:</strong> dr.smith@medibook.com</li>
+                            <li><i class="fa-solid fa-user text-emerald-500 w-5"></i><strong>Patient:</strong> john@demo.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-login" class="view hidden max-w-md mx-auto card-3d p-8 rounded-2xl">
+            <h2 class="text-3xl font-black text-gray-900 mb-2 text-center">Welcome Back</h2>
+            <p class="text-center text-sm text-gray-500 mb-6 font-medium">Access your global medical account configuration</p>
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="login-email" required class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white/80 font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="login-password" required class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white/80 font-medium">
+                </div>
+                <button type="submit" class="w-full btn-3d-primary text-white p-3.5 rounded-xl font-bold tracking-wide mt-2">Sign In</button>
+            </form>
+            <p class="text-center text-sm text-gray-500 mt-6 font-semibold">Don't have an account? <span onclick="switchView('register')" class="text-blue-600 cursor-pointer hover:underline">Register here</span></p>
+        </section>
+
+        <section id="view-register" class="view hidden max-w-md mx-auto card-3d p-8 rounded-2xl">
+            <h2 class="text-3xl font-black text-gray-900 mb-2 text-center">Create Account</h2>
+            <p class="text-center text-sm text-gray-500 mb-6 font-medium">Join the decentralized healthcare booking portal</p>
+            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="reg-name" required class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white/80 font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="reg-email" required class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white/80 font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Role Configuration Profile</label>
+                    <select id="reg-role" class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white font-medium">
+                        <option value="patient">Patient Ecosystem User</option>
+                        <option value="doctor">Medical Practitioner / Doctor</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Secure Password</label>
+                    <input type="password" id="reg-password" required class="w-full border-2 border-gray-200 p-3 rounded-xl shadow-inner focus:border-blue-500 outline-none transition bg-white/80 font-medium">
+                </div>
+                <button type="submit" class="w-full btn-3d-primary text-white p-3.5 rounded-xl font-bold tracking-wide mt-2">Complete Registration</button>
+            </form>
+            <p class="text-center text-sm text-gray-500 mt-6 font-semibold">Already registered? <span onclick="switchView('login')" class="text-blue-600 cursor-pointer hover:underline">Log in here</span></p>
+        </section>
+
+        <section id="view-patient" class="view hidden space-y-8">
+            <div class="card-3d p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h2 class="text-2xl font-black text-slate-800">Patient Space: Welcome, <span id="patient-dashboard-name" class="text-blue-600"></span></h2>
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200 shadow-sm"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle animate-pulse"></i>Live Engine Operational</span>
+            </div>
+
+            <div class="card-3d p-5 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+                <div class="flex-grow w-full">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="search-doc" placeholder="Search operational doctors by system matching parameters..." oninput="renderDoctorSearch()" class="w-full border-2 border-gray-200 pl-11 pr-4 py-3 rounded-xl focus:border-blue-500 outline-none bg-white font-medium shadow-inner">
+                    </div>
+                </div>
+                <div class="w-full md:w-72">
+                    <select id="filter-specialization" onchange="renderDoctorSearch()" class="w-full border-2 border-gray-200 p-3 rounded-xl focus:border-blue-500 outline-none bg-white font-bold text-gray-700">
+                        <option value="">All Field Specializations</option>
+                        <option value="Cardiology">Cardiology Department</option>
+                        <option value="Pediatrics">Pediatrics Care</option>
+                        <option value="General Medicine">General Medicine</option>
+                        <option value="Dermatology">Dermatology Branch</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="text-lg font-black text-slate-700 tracking-wide flex items-center"><i class="fa-solid fa-user-md mr-2 text-blue-600"></i>Active Specialization Matching Personnel</h3>
+                    <div id="doctor-search-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-black text-slate-700 tracking-wide flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2 text-purple-600"></i>Your Medical Calendar Track</h3>
+                    <div id="patient-appointments" class="space-y-4">
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-doctor" class="view hidden space-y-8">
+            <div class="card-3d p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-800">Practitioner Management Terminal</h2>
+                    <p class="text-gray-500 font-medium">Logged Account: <span id="doctor-dashboard-name" class="font-bold text-slate-700"></span> | Specialty Focus: <span id="doctor-dashboard-spec" class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded border border-blue-200"></span></p>
+                </div>
+                <button onclick="openDoctorProfileModal()" class="bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl hover:bg-slate-300 transition text-sm font-bold shadow border border-slate-300/60 flex items-center">
+                    <i class="fa-solid fa-user-gear mr-2 text-slate-500"></i> Configure Practice Scope
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="card-3d p-6 rounded-2xl h-fit space-y-5">
+                    <h3 class="text-lg font-black text-slate-700">Provision Availability Window</h3>
+                    <form id="availability-form" onsubmit="handleAddSlot(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Target Date</label>
+                            <input type="date" id="slot-date" required class="w-full border-2 border-gray-200 p-2.5 rounded-xl shadow-inner font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Target Start Time</label>
+                            <input type="time" id="slot-time" required class="w-full border-2 border-gray-200 p-2.5 rounded-xl shadow-inner font-semibold">
+                        </div>
+                        <button type="submit" class="w-full btn-3d-success text-white p-3 rounded-xl font-bold tracking-wide">Publish Free Window</button>
+                    </form>
+                    <hr class="border-gray-200">
+                    <h4 class="text-sm font-black text-slate-600">Your Current System Windows:</h4>
+                    <div id="doctor-slots-list" class="flex flex-wrap gap-2 pt-1">
+                        </div>
+                </div>
+
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="text-lg font-black text-slate-700 flex items-center"><i class="fa-solid fa-network-wired mr-2 text-indigo-600"></i>Live Operational Patient Flow</h3>
+                    <div id="doctor-appointments-feed" class="space-y-4">
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-admin" class="view hidden space-y-8">
+            <h2 class="text-3xl font-black text-slate-800 border-b pb-4">Master Systems Administration Workspace</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card-3d bg-gradient-to-br from-blue-50 to-blue-100/30 border-blue-200 p-6 rounded-2xl text-center">
+                    <p class="text-xs text-blue-600 uppercase font-black tracking-widest">Total Registered Nodes</p>
+                    <p id="stat-users" class="text-4xl font-black text-blue-900 mt-2 tracking-tight">0</p>
+                </div>
+                <div class="card-3d bg-gradient-to-br from-purple-50 to-purple-100/30 border-purple-200 p-6 rounded-2xl text-center">
+                    <p class="text-xs text-purple-600 uppercase font-black tracking-widest">Active Consultations</p>
+                    <p id="stat-appointments" class="text-4xl font-black text-purple-900 mt-2 tracking-tight">0</p>
+                </div>
+                <div class="card-3d bg-gradient-to-br from-amber-50 to-amber-100/30 border-amber-200 p-6 rounded-2xl text-center">
+                    <p class="text-xs text-amber-600 uppercase font-black tracking-widest">Global Windows Mapped</p>
+                    <p id="stat-slots" class="text-4xl font-black text-amber-900 mt-2 tracking-tight">0</p>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="card-3d rounded-2xl overflow-hidden p-0">
+                    <div class="bg-slate-800 text-white p-4 font-black text-base tracking-wide flex justify-between items-center">
+                        <span>User Profile Core Registry</span>
+                        <span class="text-xs font-normal text-slate-400">Total Account Mapping Directory</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b">
+                                <tr>
+                                    <th class="p-4">Name Vector</th>
+                                    <th class="p-4">Auth Communications Vector</th>
+                                    <th class="p-4">Global Security Access Role</th>
+                                    <th class="p-4 text-center">Actions Array</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-users" class="divide-y divide-gray-200/50 font-medium">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-3d rounded-2xl overflow-hidden p-0">
+                    <div class="bg-slate-800 text-white p-4 font-black text-base tracking-wide flex justify-between items-center">
+                        <span>Central Scheduling Matrix Ledger</span>
+                        <span class="text-xs font-normal text-slate-400">Cross-Role Operations Matrix</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-100 text-slate-500 uppercase text-xs font-bold border-b">
+                                <tr>
+                                    <th class="p-4">Patient Client Node</th>
+                                    <th class="p-4">Target Specialist Practitioner</th>
+                                    <th class="p-4">Epoch Window Date/Time</th>
+                                    <th class="p-4">Verification Token Status</th>
+                                    <th class="p-4 text-center">System Hard Stop Override</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-appointments" class="divide-y divide-gray-200/50 font-medium">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-6 text-sm border-t border-slate-800 mt-auto font-medium">
+        &copy; 2026 MediBook Platform Ecosystem. Rendered inside a localized single-page reactive DOM space.
+    </footer>
+
+    <div id="email-toast-container" class="fixed bottom-5 right-5 space-y-3 z-50 max-w-sm w-full"></div>
+
+    <div id="doctor-profile-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+        <div class="card-3d bg-white max-w-md w-full p-6 space-y-5 rounded-2xl shadow-2xl border-white scale-95 transition-transform duration-300">
+            <h3 class="text-2xl font-black text-slate-800">Configure Practice Scope</h3>
+            <form id="doc-profile-form" onsubmit="handleSaveDocProfile(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Medical Specialization Field</label>
+                    <select id="modal-doc-spec" class="w-full border-2 border-gray-200 p-2.5 rounded-xl focus:border-blue-500 font-semibold outline-none bg-white">
+                        <option value="General Medicine">General Medicine</option>
+                        <option value="Cardiology">Cardiology Department</option>
+                        <option value="Pediatrics">Pediatrics Care</option>
+                        <option value="Dermatology">Dermatology Branch</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Practice Location/Bio Details</label>
+                    <input type="text" id="modal-doc-bio" placeholder="e.g., Senior Consultant, West Wing Room 402" required class="w-full border-2 border-gray-200 p-2.5 rounded-xl focus:border-blue-500 font-semibold outline-none shadow-inner">
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeDoctorProfileModal()" class="px-5 py-2.5 border-2 rounded-xl text-slate-600 font-bold hover:bg-slate-100 transition">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-black tracking-wide shadow">Save Configuration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // SEED/INITIALIZE SYSTEM LOCALSTORAGE DATABASE FOR REALISTIC PORTFOLIO FEEL
+        function initializeDatabase() {
+            if (!localStorage.getItem('mb_users')) {
+                const initialUsers = [
+                    { id: "u1", name: "System Administrator", email: "admin@medibook.com", password: "password123", role: "admin" },
+                    { id: "u2", name: "Dr. Jane Smith", email: "dr.smith@medibook.com", password: "password123", role: "doctor", specialization: "Cardiology", bio: "Chief Cardiologist, Room 402" },
+                    { id: "u3", name: "Dr. Robert Chen", email: "dr.chen@medibook.com", password: "password123", role: "doctor", specialization: "Pediatrics", bio: "Consultant Pediatrician, Floor 2" },
+                    { id: "u4", name: "John Doe", email: "john@demo.com", password: "password123", role: "patient" }
+                ];
+                localStorage.setItem('mb_users', JSON.stringify(initialUsers));
+            }
+            if (!localStorage.getItem('mb_slots')) {
+                const initialSlots = [
+                    { id: "s1", doctorId: "u2", date: "2026-07-15", time: "09:00", booked: false },
+                    { id: "s2", doctorId: "u2", date: "2026-07-15", time: "11:00", booked: true },
+                    { id: "s3", doctorId: "u3", date: "2026-07-16", time: "14:30", booked: false }
+                ];
+                localStorage.setItem('mb_slots', JSON.stringify(initialSlots));
+            }
+            if (!localStorage.getItem('mb_appointments')) {
+                const initialAppointments = [
+                    { id: "a1", patientId: "u4", doctorId: "u2", slotId: "s2", date: "2026-07-15", time: "11:00", status: "confirmed" }
+                ];
+                localStorage.setItem('mb_appointments', JSON.stringify(initialAppointments));
+            }
+        }
+
+        // DATABASE RETRIEVERS HELPER METHODS
+        const getDB = (key) => JSON.parse(localStorage.getItem(key));
+        const setDB = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+
+        // GLOBAL APPLICATION STATE
+        let currentUser = null;
+
+        // AUTHENTICATION ROUTING AND PROFILE INITIALIZATION ENGINE
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(view => view.classList.add('hidden'));
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+            renderNavbar();
+
+            if (viewId === 'patient') { renderPatientDashboard(); }
+            if (viewId === 'doctor') { renderDoctorDashboard(); }
+            if (viewId === 'admin') { renderAdminDashboard(); }
+        }
+
+        function renderNavbar() {
+            const container = document.getElementById('nav-links');
+            if (!currentUser) {
+                container.innerHTML = `
+                    <button onclick="switchView('login')" class="hover:text-blue-200 text-sm font-black tracking-wide transition">Login</button>
+                    <button onclick="switchView('register')" class="bg-white text-blue-600 px-5 py-2 rounded-xl font-black text-sm hover:bg-blue-50 transition shadow border-b-2 border-blue-200">Register</button>
+                `;
+            } else {
+                let dashboardNavId = currentUser.role;
+                container.innerHTML = `
+                    <span class="text-xs bg-blue-900 border border-blue-400 rounded-lg px-2.5 py-1 hidden sm:inline uppercase tracking-widest font-black text-blue-200">${currentUser.role} mode</span>
+                    <button onclick="switchView('${dashboardNavId}')" class="hover:text-blue-200 text-sm font-black tracking-wide transition">Dashboard</button>
+                    <button onclick="handleLogout()" class="bg-red-500 border-b-2 border-red-700 hover:bg-red-600 px-4 py-1.5 rounded-xl text-sm font-black transition tracking-wide">Sign Out</button>
+                `;
+            }
+        }
+
+        // CONTROL AUTH ACTION COMPONENT
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const role = document.getElementById('reg-role').value;
+            const password = document.getElementById('reg-password').value;
+
+            let users = getDB('mb_users');
+            if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+                alert("Account with this email already exists inside data ledger.");
+                return;
+            }
+
+            const newUser = {
+                id: 'u_' + Date.now(), name, email, password, role,
+                ...(role === 'doctor' && { specialization: 'General Medicine', bio: 'New Practice Consultant Staff' })
+            };
+
+            users.push(newUser);
+            setDB('mb_users', users);
+            triggerEmailToast(email, "Welcome to MediBook Core Environment", `Hello ${name}, your platform authorization account mapping as a [${role}] has completed successfully.`);
+            
+            document.getElementById('register-form').reset();
+            currentUser = newUser;
+            switchView(role);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const users = getDB('mb_users');
+            const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+
+            if (!foundUser) {
+                alert("Invalid node key configuration authentication details.");
+                return;
+            }
+            currentUser = foundUser;
+            document.getElementById('login-form').reset();
+            switchView(currentUser.role);
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            switchView('landing');
+        }
+
+        // SIMULATED TRANSACTION EMAIL SENDER PIPELINE
+        function triggerEmailToast(toEmail, subject, textBody) {
+            const container = document.getElementById('email-toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-slate-900 text-white rounded-2xl p-4 shadow-2xl text-xs space-y-1.5 border-l-4 border-blue-500 transform transition-all duration-500 translate-y-4 opacity-0 scale-95";
+            toast.innerHTML = `
+                <div class="flex justify-between font-black text-blue-400 border-b border-slate-800 pb-1.5 text-[10px] tracking-widest uppercase">
+                    <span><i class="fa-solid fa-envelope-open-text mr-1"></i> Mock SMTP Email Relay</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-white text-sm">&times;</button>
+                </div>
+                <div><strong>To:</strong> ${toEmail}</div>
+                <div><strong>Subject:</strong> ${subject}</div>
+                <div class="text-gray-400 mt-1 italic bg-slate-950 p-2 rounded-lg border border-slate-800">"${textBody}"</div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-4', 'opacity-0', 'scale-95'); }, 100);
+            setTimeout(() => { toast.remove(); }, 9000); 
+        }
+
+        // ----------------- PATIENT WORKFLOWS MODULE -----------------
+        function renderPatientDashboard() {
+            document.getElementById('patient-dashboard-name').innerText = currentUser.name;
+            renderDoctorSearch();
+            renderPatientAppointments();
+        }
+
+        function renderDoctorSearch() {
+            const query = document.getElementById('search-doc').value.toLowerCase();
+            const specFilter = document.getElementById('filter-specialization').value;
+            const target = document.getElementById('doctor-search-results');
+            target.innerHTML = '';
+
+            const users = getDB('mb_users');
+            const slots = getDB('mb_slots');
+            const doctors = users.filter(u => u.role === 'doctor');
+
+            const filteredDocs = doctors.filter(doc => {
+                const matchesSearch = doc.name.toLowerCase().includes(query);
+                const matchesSpec = !specFilter || doc.specialization === specFilter;
+                return matchesSearch && matchesSpec;
+            });
+
+            if (filteredDocs.length === 0) {
+                target.innerHTML = `<p class="text-sm text-slate-500 italic p-2 col-span-2">No active practitioners found coordinating criteria parameters.</p>`;
+                return;
+            }
+
+            filteredDocs.forEach(doc => {
+                const docSlots = slots.filter(s => s.doctorId === doc.id && !s.booked);
+                let slotsHtml = docSlots.map(s => `
+                    <button onclick="bookAppointment('${doc.id}', '${s.id}')" class="slot-3d px-3 py-2 rounded-xl font-bold text-xs text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white transition">
+                        ${s.date} <br> @ ${s.time}
+                    </button>
+                `).join('');
+
+                if (docSlots.length === 0) {
+                    slotsHtml = `<p class="text-xs text-red-500 italic font-semibold bg-red-50 p-2 rounded-xl border border-red-100 w-full text-center">No available allocation spaces</p>`;
+                }
+
+                target.innerHTML += `
+                    <div class="card-3d p-6 rounded-2xl flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-tr from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-black text-lg shadow-md border-b-4 border-blue-900">Dr</div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 text-base leading-tight">${doc.name}</h4>
+                                    <span class="inline-block bg-blue-100 text-blue-800 text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-lg border border-blue-200 mt-1">${doc.specialization}</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-4 italic font-medium bg-slate-100/60 p-2.5 rounded-xl border border-slate-200/50">${doc.bio || 'General Clinical Practicing Staff'}</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Available Windows:</p>
+                            <div class="grid grid-cols-2 gap-2">${slotsHtml}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function bookAppointment(docId, slotId) {
+            let slots = getDB('mb_slots');
+            let appointments = getDB('mb_appointments');
+            let users = getDB('mb_users');
+
+            const targetSlot = slots.find(s => s.id === slotId);
+            const doctorObj = users.find(u => u.id === docId);
+
+            targetSlot.booked = true;
+            
+            const newAppointment = {
+                id: 'app_' + Date.now(),
+                patientId: currentUser.id,
+                doctorId: docId,
+                slotId: slotId,
+                date: targetSlot.date,
+                time: targetSlot.time,
+                status: 'confirmed'
+            };
+
+            appointments.push(newAppointment);
+            setDB('mb_slots', slots);
+            setDB('mb_appointments', appointments);
+
+            triggerEmailToast(currentUser.email, "Booking Allocation Confirmed", `Your medical window with ${doctorObj.name} is sealed for ${targetSlot.date} at ${targetSlot.time}.`);
+            triggerEmailToast(doctorObj.email, "New Patient Route Scheduled", `Client patient ${currentUser.name} has mapped a window block on ${targetSlot.date} at ${targetSlot.time}.`);
+            
+            renderPatientDashboard();
+        }
+
+        function renderPatientAppointments() {
+            const target = document.getElementById('patient-appointments');
+            target.innerHTML = '';
+            
+            const appointments = getDB('mb_appointments').filter(a => a.patientId === currentUser.id);
+            const users = getDB('mb_users');
+
+            if (appointments.length === 0) {
+                target.innerHTML = `<p class="text-sm text-slate-500 italic p-4 text-center bg-white/40 rounded-2xl border">No historical booking items logged.</p>`;
+                return;
+            }
+
+            appointments.forEach(app => {
+                const doc = users.find(u => u.id === app.doctorId) || { name: 'Unknown Practitioner' };
+                let badgeClass = app.status === 'confirmed' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200';
+                
+                let actionBtn = app.status === 'confirmed' ? `
+                    <button onclick="cancelAppointment('${app.id}')" class="text-xs text-red-600 font-extrabold hover:underline tracking-wide bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg border border-red-200 transition">Drop Window Slot</button>
+                ` : '';
+
+                target.innerHTML += `
+                    <div class="card-3d p-4 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-black text-slate-800 text-sm">${doc.name}</h4>
+                                <p class="text-xs font-semibold text-slate-500 mt-0.5"><i class="fa-regular fa-calendar-days mr-1"></i> ${app.date} &nbsp;<i class="fa-regular fa-clock mr-1"></i> ${app.time}</p>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border rounded-md ${badgeClass}">${app.status}</span>
+                        </div>
+                        <div class="flex justify-end pt-2 border-t border-slate-200/60">${actionBtn}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function cancelAppointment(appId) {
+            if (!confirm("Are you sure you want to drop this booking window allocation?")) return;
+
+            let appointments = getDB('mb_appointments');
+            let slots = getDB('mb_slots');
+            let users = getDB('mb_users');
+
+            const app = appointments.find(a => a.id === appId);
+            app.status = 'cancelled';
+
+            const slot = slots.find(s => s.id === app.slotId);
+            if (slot) slot.booked = false; 
+
+            setDB('mb_appointments', appointments);
+            setDB('mb_slots', slots);
+
+            const doc = users.find(u => u.id === app.doctorId);
+            triggerEmailToast(currentUser.email, "Allocation Dropped Successfully", `Your calendar schedule mapping configured for ${app.date} has been released.`);
+            if (doc) triggerEmailToast(doc.email, "System Alert: Patient Cancellation", `The reservation link built with patient ${currentUser.name} on ${app.date} was broken.`);
+
+            renderPatientDashboard();
+        }
+
+        // ----------------- DOCTOR WORKFLOWS MODULE -----------------
+        function renderDoctorDashboard() {
+            document.getElementById('doctor-dashboard-name').innerText = currentUser.name;
+            document.getElementById('doctor-dashboard-spec').innerText = currentUser.specialization || "General Medicine";
+            
+            renderDoctorSlots();
+            renderDoctorAppointmentsFeed();
+        }
+
+        function renderDoctorSlots() {
+            const target = document.getElementById('doctor-slots-list');
+            target.innerHTML = '';
+            const slots = getDB('mb_slots').filter(s => s.doctorId === currentUser.id);
+
+            if (slots.length === 0) {
+                target.innerHTML = `<p class="text-xs text-slate-500 italic font-medium p-1">No operational schedules published.</p>`;
+                return;
+            }
+
+            slots.forEach(s => {
+                let colorClass = s.booked ? 'bg-red-100 text-red-800 border-red-200 shadow-sm' : 'bg-emerald-100 text-emerald-800 border-emerald-200 shadow-sm';
+                target.innerHTML += `
+                    <span class="text-xs border-2 px-2.5 py-1.5 rounded-xl font-bold tracking-wide ${colorClass}">
+                        <i class="fa-regular ${s.booked ? 'fa-circle-xmark' : 'fa-circle-check'} mr-1"></i> ${s.date} [${s.time}]
+                    </span>
+                `;
+            });
+        }
+
+        function handleAddSlot(e) {
+            e.preventDefault();
+            const date = document.getElementById('slot-date').value;
+            const time = document.getElementById('slot-time').value;
+
+            let slots = getDB('mb_slots');
+            const newSlot = { id: 's_' + Date.now(), doctorId: currentUser.id, date, time, booked: false };
+            
+            slots.push(newSlot);
+            setDB('mb_slots', slots);
+            document.getElementById('availability-form').reset();
+            renderDoctorDashboard();
+        }
+
+        function renderDoctorAppointmentsFeed() {
+            const target = document.getElementById('doctor-appointments-feed');
+            target.innerHTML = '';
+
+            const appointments = getDB('mb_appointments').filter(a => a.doctorId === currentUser.id);
+            const users = getDB('mb_users');
+
+            if (appointments.length === 0) {
+                target.innerHTML = `<p class="text-sm text-slate-500 italic p-6 text-center bg-white/40 rounded-2xl border">No incoming customer interactions.</p>`;
+                return;
+            }
+
+            appointments.forEach(app => {
+                const patient = users.find(u => u.id === app.patientId) || { name: 'Terminated Account Data' };
+                let statusBadge = app.status === 'confirmed' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200';
+
+                target.innerHTML += `
+                    <div class="card-3d p-4 rounded-2xl flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center border border-indigo-200"><i class="fa-solid fa-user-injured"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 text-sm">${patient.name}</h4>
+                                <p class="text-xs font-semibold text-slate-500 mt-0.5"><i class="fa-regular fa-clock mr-1"></i>${app.date} at ${app.time}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-black uppercase border tracking-widest px-3 py-1 rounded-lg ${statusBadge}">${app.status}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // DOCTOR SETTINGS MODAL INTERACTION INTERFACE
+        function openDoctorProfileModal() {
+            document.getElementById('modal-doc-spec').value = currentUser.specialization || 'General Medicine';
+            document.getElementById('modal-doc-bio').value = currentUser.bio || '';
+            const modal = document.getElementById('doctor-profile-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => { modal.firstElementChild.style.transform = "scale(1)"; }, 50);
+        }
+
+        // Fix modal animation out
+        function closeDoctorProfileModal() {
+            const modal = document.getElementById('doctor-profile-modal');
+            modal.firstElementChild.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        function handleSaveDocProfile(e) {
+            e.preventDefault();
+            let users = getDB('mb_users');
+            const dbUser = users.find(u => u.id === currentUser.id);
+            
+            dbUser.specialization = document.getElementById('modal-doc-spec').value;
+            dbUser.bio = document.getElementById('modal-doc-bio').value;
+            
+            currentUser = dbUser; 
+            setDB('mb_users', users);
+            closeDoctorProfileModal();
+            renderDoctorDashboard();
+        }
+
+        // ----------------- ADMIN WORKFLOWS MODULE -----------------
+        function renderAdminDashboard() {
+            const users = getDB('mb_users');
+            const appointments = getDB('mb_appointments');
+            const slots = getDB('mb_slots');
+
+            document.getElementById('stat-users').innerText = users.length;
+            document.getElementById('stat-appointments').innerText = appointments.length;
+            document.getElementById('stat-slots').innerText = slots.length;
+
+            const usersTable = document.getElementById('admin-table-users');
+            usersTable.innerHTML = '';
+            users.forEach(u => {
+                usersTable.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-4 font-bold text-slate-800">${u.name}</td>
+                        <td class="p-4 text-slate-600 font-mono text-xs">${u.email}</td>
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border border-slate-300 tracking-wider bg-slate-200 text-slate-700">${u.role}</span></td>
+                        <td class="p-4 text-center"><button onclick="deleteUser('${u.id}')" class="text-red-600 text-xs font-black hover:underline px-3 py-1 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 transition ${u.id === currentUser.id ? 'hidden' : ''}">Delete Node</button></td>
+                    </tr>
+                `;
+            });
+
+            const appointmentsTable = document.getElementById('admin-table-appointments');
+            appointmentsTable.innerHTML = '';
+            appointments.forEach(app => {
+                const patient = users.find(u => u.id === app.patientId) || { name: 'Dropped Account' };
+                const doctor = users.find(u => u.id === app.doctorId) || { name: 'Dropped Account' };
+
+                appointmentsTable.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-4 text-slate-800 font-bold">${patient.name}</td>
+                        <td class="p-4 text-slate-700 font-semibold">${doctor.name}</td>
+                        <td class="p-4 text-xs font-mono text-slate-500">${app.date} @ ${app.time}</td>
+                        <td class="p-4"><span class="text-[9px] px-2.5 py-1 rounded-md font-black border uppercase tracking-widest ${app.status === 'confirmed' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}">${app.status}</span></td>
+                        <td class="p-4 text-center"><button onclick="adminCancelAppointment('${app.id}')" class="text-xs text-red-600 font-black hover:underline px-3 py-1 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition ${app.status !== 'confirmed' ? 'hidden' : ''}">Force Kill</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function deleteUser(userId) {
+            if (!confirm("Are you sure you want to remove this profile signature out of system registries?")) return;
+            let users = getDB('mb_users').filter(u => u.id !== userId);
+            setDB('mb_users', users);
+            renderAdminDashboard();
+        }
+
+        function adminCancelAppointment(appId) {
+            if (!confirm("Execute master kill override on this specific booking entry profile item?")) return;
+            let appointments = getDB('mb_appointments');
+            let slots = getDB('mb_slots');
+
+            const app = appointments.find(a => a.id === appId);
+            app.status = 'cancelled';
+
+            const slot = slots.find(s => s.id === app.slotId);
+            if (slot) slot.booked = false;
+
+            setDB('mb_appointments', appointments);
+            setDB('mb_slots', slots);
+            renderAdminDashboard();
+        }
+
+        // INITIALIZATION INITIAL CALL ON LOAD
+        window.onload = () => {
+            initializeDatabase();
+            switchView('landing');
+        };
+    </script>
+</body>
+</html>
